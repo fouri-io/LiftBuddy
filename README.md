@@ -10,7 +10,6 @@ ESP32 will be connected to via Wifi and serve a very simple html page which give
 When the up/down button is pressed along with a timer it will send that message to ESP32 which triggers
 a relay which is connected to the boat lift.
 
-
 # First Time Use
 Let's test it before wiring up in the comfort of your home:
 1. Plug in the black power cord
@@ -50,12 +49,15 @@ You should see a few lights fire up on the LiftBuddy. The Relay will have a gree
 
 # Troubleshooting
 **The lift is going up when I select down, and down when I select Up**
+
 Reverse the wires on your switch. Move the Yellow to the up, and Blue/Red to the down -- this should fix it.
 
 **When I try to pull up the Web page but nothing shows up**
+
 This is almost certainly due to you not being on the Wifi Address. Double-check that your wifi on your phone is connected to LIFT_BUDDY_1.
 It will not work if you are not directly connected to it.
 
 **I am connected to the right WIFI but the web page is still not coming up**
+
 You likely typed in the address wrong. Try typing out the full address if it doesn't work by just putting in the numbers: http://192.168.10.1
 
