@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f8ff;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      color: #333;
+    }
+    .layout {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+    .column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px;
+    }
+    .countdown {
+      font-size: 10em;
+      margin: 20px;
+    }
+    button {
+      padding: 15px 25px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .stop-btn {
+      background-color: red;
+      color: white;
+      font-size: 2em;
+      padding: 20px 40px;
+      width: 80%;
+      max-width: 400px;
+      margin-top: 20px;
+    }
+    .dir-btn {
+      width: 100px;
+      height: 60px;
+      font-size: 2em;
+      background-color: grey;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .dir-btn.active {
+      background-color: #32cd32;
+    }
+    .time-btn {
+      background-color: #32cd32;
+      color: white;
+      width: 100px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Lift Buddy</h1>
+  <div class="layout">
+    <div class="column">
+      <button class="dir-btn" id="upBtn" onclick="setDirection('up')">&#9650;</button>
+      <button class="dir-btn" id="downBtn" onclick="setDirection('down')">&#9660;</button>
+    </div>
+
+    <div class="column">
+      <div class="countdown" id="timer">0</div>
+    </div>
+
+    <div class="column">
+      <button class="time-btn" onclick="startLift(10)">10s</button>
+      <button class="time-btn" onclick="startLift(30)">30s</button>
+      <button class="time-btn" onclick="startLift(60)">60s</button>
+      <button class="time-btn" onclick="startLift(120)">120s</button>
+    </div>
+  </div>
+
+  <button class="stop-btn" onclick="stopLift()">STOP</button>
+
+  <script>
+    let direction = null;
+    let countdownInterval;
+
+    function setDirection(dir) {
+      direction = dir;
+      document.getElementById('upBtn').classList.remove('active');
+      document.getElementById('downBtn').classList.remove('active');
+      if (dir === 'up') {
+        document.getElementById('upBtn').classList.add('active');
+      } else if (dir === 'down') {
+        document.getElementById('downBtn').classList.add('active');
+      }
+    }
+
+    function startLift(seconds) {
+      if (!direction) {
+        return;
+      }
+
+      fetch(`/start?dir=${direction}&time=${seconds}`)
+        .then(() => {
+          let count = seconds;
+          document.getElementById('timer').textContent = count;
+          clearInterval(countdownInterval);
+          countdownInterval = setInterval(() => {
+            count--;
+            document.getElementById('timer').textContent = count;
+            if (count <= 0) clearInterval(countdownInterval);
+          }, 1000);
+        });
+    }
+
+    function stopLift() {
+      fetch('/stop');
+      clearInterval(countdownInterval);
+      document.getElementById('timer').textContent = '0';
+    }
+  </script>
+</body>
+</html>
