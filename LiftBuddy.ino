@@ -3,7 +3,7 @@
 #include <SPIFFS.h>
 
 // Wi-Fi Access Point credentials
-const char* ssid = "LIFT_BUDDY_1";
+const char* ssid = "LIFT_BUDDY_2";
 const char* password = "Ward9044031391";
 
 // Web server on port 80
@@ -19,8 +19,8 @@ unsigned long liftDuration = 0;
 bool liftRunning = false;
 
 void stopLift() {
-  digitalWrite(relayUpPin, HIGH);   // deactivate relays
-  digitalWrite(relayDownPin, HIGH);
+  digitalWrite(relayUpPin, LOW);   // deactivate relays
+  digitalWrite(relayDownPin, LOW);
   liftRunning = false;
 
   Serial.print("[" + String(millis()) + "] ");
@@ -31,9 +31,11 @@ void startLift(String dir, unsigned long seconds) {
   stopLift();  // ensure clean start
 
   if (dir == "up") {
-    digitalWrite(relayUpPin, LOW);
-  } else if (dir == "down") {
+    digitalWrite(relayUpPin, HIGH);
     digitalWrite(relayDownPin, LOW);
+  } else if (dir == "down") {
+    digitalWrite(relayDownPin, HIGH);
+    digitalWrite(relayUpPin, LOW);
   }
 
   liftDuration = seconds * 1000;
@@ -82,11 +84,12 @@ void handleStop() {
 void setup() {
   Serial.begin(115200);
 
-  // Set up relay pins
+  // Set pin HIGH *before* setting pinMode
+  
   pinMode(relayUpPin, OUTPUT);
   pinMode(relayDownPin, OUTPUT);
-  digitalWrite(relayUpPin, HIGH);  // relays off (active LOW)
-  digitalWrite(relayDownPin, HIGH);
+  digitalWrite(relayDownPin, LOW);
+  digitalWrite(relayUpPin, LOW);
 
   // Start SPIFFS
   if (!SPIFFS.begin(true)) {
