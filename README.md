@@ -13,7 +13,7 @@ a relay which is connected to the boat lift.
 # First Time Use
 Let's test it before wiring up in the comfort of your home:
 1. Plug in the black power cord
-2. Connect to the WIFI that LiftBuddy is transmitting: **LIFT_BUDDY_1**
+2. Connect to the WIFI that LiftBuddy is transmitting: **LIFT_BUDDY_2**
 3. You will need to enter your password: **Ward9044031391**
 
 Once the password is put in the first time, it should be easy to select in the future without needing to put in your password
